@@ -2,9 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import Box from './Box';
 import Plane from './Plane'
-import { useRef } from 'react';
+import { Suspense, useRef } from 'react';
 import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import { OrbitControls, TransformControls } from 'three-stdlib'
+import France from './France';
 
 extend({ OrbitControls, TransformControls })
 
@@ -18,19 +19,27 @@ function App() {
     return <orbitControls ref={controls} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} rotateSpeed={0.5} />
   }
 
+  const Loading = () => {
+    return (
+      <group>loading...</group>
+    )
+  }
+
   return (
     <div className='canvas'>
       <Canvas camera={{
-        position: [0, 0, -30]
+        position: [0, 0, -5]
       }}
         // orthographic
       >
         <Controls />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <Box position={[-1.2, 0, 0]} />
-        <Box position={[1.2, 0, 0]} />
-        <Plane position={[0, 0, 0]} />
+        {/* <ambientLight /> */}
+        <pointLight position={[0, 0, -1]} />
+        {/* <Plane position={[0, 0, 0]} /> */}
+        <Suspense fallback={<Loading />}>
+                <France
+                />
+              </Suspense>
       </Canvas>
     </div>
   );
